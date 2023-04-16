@@ -1,7 +1,10 @@
 venv
-*~
 __pycache__
 *.pyc
+.idea
+
+
+*~
 instance/
 
 .pytest_cache/
@@ -14,4 +17,3 @@ build/
 .DS_Store
 site/app/files
 
-.idea
