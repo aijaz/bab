@@ -1,10 +1,13 @@
-from flask import Flask
 from logging.config import dictConfig
 import os
+import sys
 
-current_directory = "/Users/AAnsari/src/Aijaz/bab"  # /Users/AAnsari/src/Aijaz/bab
+from flask import Flask
+
+app = Flask(__name__)
+
+current_directory = app.root_path  # /Users/AAnsari/src/Aijaz/bab
 log_file = os.path.join(current_directory, "flask.log")  # /Users/AAnsari/src/Aijaz/bab/flask.log
-# log_file = f"{current_directory}/flask.log"
 dictConfig(
     {
         'version': 1,
@@ -22,22 +25,26 @@ dictConfig(
                     'class': 'logging.FileHandler',
                     'formatter': 'simpleformatter',
                     'filename': log_file,
-                    'level': 'WARN'
+                    'level': 'DEBUG'
+                },
+                'stdout_handler': {
+                    'class': 'logging.StreamHandler',
+                    'formatter': 'default',
+                    'stream': sys.stdout,
+                    'level': 'DEBUG'
                 }
             },
         'root': {
             'level': 'DEBUG',
-            'handlers': ['custom_handler']
+            'handlers': ['custom_handler', 'stdout_handler']
         }})
-
-app = Flask(__name__)
 
 
 @app.route("/")
 def hello_world():
     app.logger.info("About to return Hello world")
     app.logger.debug("This is a debug statement")
-    return "<p>Hello, World Four!</p>"
+    return "<p>Hello, World Five!</p>"
 
 
 if __name__ == "__main__":
