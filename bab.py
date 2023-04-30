@@ -2,7 +2,7 @@ from logging.config import dictConfig
 import os
 import sys
 
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -44,7 +44,7 @@ dictConfig(
 def hello_world():
     app.logger.info("About to return Hello world")
     app.logger.debug("This is a debug statement")
-    return "<p>Hello, World Five!</p>"
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
