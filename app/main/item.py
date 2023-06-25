@@ -91,6 +91,6 @@ if __name__ == "__main__":
     # d.save()
     # d.load()
     # d.show()
-    d.add_item(image_file="/blah/blah.png", item_name="tablet", item_description="my new tablet", person_id=1123123)
+    d.add_item(image_file="static/birbWithTheEarring.jpg", item_name="tablet", item_description="my new tablet", person_id=1123123)
     d.show()
     d.save()
