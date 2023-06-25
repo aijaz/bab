@@ -6,4 +6,4 @@ from . import main
 def hello_world():
     current_app.logger.info("About to return Hello world")
     current_app.logger.debug("This is a debug statement")
-    return render_template("index.html")
+    return render_template("index.html", people=[{"name": "Kayra"}, {"name": "Mum"}, {"name": "Dad"}, {"name": "birb"}])
