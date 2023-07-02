@@ -5,9 +5,12 @@ class Person:
     def __init__(self):
         self.person_id = ''  # This identifier is guaranteed to be unique
         self.person_name = ''
+        self.person_image_file = None
 
     def show_person(self):
         print(f"Person with id {self.person_id} and name {self.person_name}")
+        if self.person_image_file:
+            print(f"  The image file for this person is {self.person_image_file}")
 
 
 class Item:
@@ -15,7 +18,7 @@ class Item:
         self.item_name = ''
         self.item_description = ''
         self.person_id = ''
-        self.image_file = ''
+        self.image_file = None
 
     def show_item(self):
         print(f"Item named {self.item_name}: {self.item_description}. Belonging to person with id {self.person_id}")
@@ -24,18 +27,19 @@ class Item:
 
 
 class Database:
-    def __init__(self):
+    def __init__(self, pickle_file):
         self.persons = []  # List of persons
         self.items = []  # List of items
+        self.pickle_file = pickle_file
 
     def save(self):
         try:
-            with open("data.pickle", "wb") as f:
+            with open(self.pickle_file, "wb") as f:
                 pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
         except Exception as ex:
             print("Error during pickling object (Possibly unsupported):", ex)
 
-    def add_person(self, person_id, person_name):
+    def add_person(self, person_id, person_name, person_image_file=None):
         # create a new Person object
         # assign the variable p to be that new Person object
         p = Person()
@@ -44,6 +48,7 @@ class Database:
         # set those attributes to what was passed in to this add_person method
         p.person_id = person_id
         p.person_name = person_name
+        p.person_image_file = person_image_file
 
         # append this new object to our persons list
         self.persons.append(p)
@@ -65,7 +70,7 @@ class Database:
 
     def load(self):
         try:
-            with open("data.pickle", "rb") as f:
+            with open(self.pickle_file, "rb") as f:
                 # create a new database from the loaded file
                 loaded_d = pickle.load(f)
 
@@ -82,15 +87,14 @@ class Database:
             item.show_item()
 
 
-
 if __name__ == "__main__":
     d = Database()
     # d.add_person(1, 'Kayra')
     # d.add_person(2, 'Kdub')
     # d.show()
     # d.save()
-    # d.load()
+    d.load()
     # d.show()
-    d.add_item(image_file="static/birbWithTheEarring.jpg", item_name="tablet", item_description="my new tablet", person_id=1123123)
+    # d.add_item(image_file="static/birbWithTheEarring.jpg", item_name="tablet", item_description="my new tablet", person_id=1123123)
     d.show()
-    d.save()
+    # d.save()
