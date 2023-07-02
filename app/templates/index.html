@@ -208,9 +208,9 @@
         {% for person in people %}
         <div class="col">
           <div class="card shadow-sm">
-            <img alt="Image of {{person.name}}" src="{{person.img}}" style="width: 225px; height: auto;">
+            <img alt="Image of {{person.person_name}}" src="{{person.person_image_file}}" style="width: 225px; height: auto;">
             <div class="card-body">
-              <p class="card-text">{{person.name}}</p>
+              <p class="card-text">{{person.person_name}}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary">View</button>

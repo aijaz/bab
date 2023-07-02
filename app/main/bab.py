@@ -12,9 +12,8 @@ def hello_world():
     # add an items list to the each person's entry in the people dictionary for their items
     d = item.Database(json_file=os.path.join(current_app.root_path, "main", "data.json"))
     d.load()
-    print(d)
-    print(d.persons)
-    current_app.logger.info(current_app.root_path)
-    return render_template("index.html", people=d.persons)
+    people = [p.as_json() for p in d.persons]
+    current_app.logger.info(people)
+    return render_template("index.html", people=people)
 
 
