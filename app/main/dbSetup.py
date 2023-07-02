@@ -3,7 +3,7 @@ from item import Item
 from item import Person
 
 if __name__ == "__main__":
-    d = Database(pickle_file="./data.pickle")
+    d = Database(json_file="./data.json")
     # d.add_person(1, 'Kayra Çevik')
     # d.add_person(2, 'Mum')
     # d.add_person(3, 'Dad')
@@ -11,7 +11,7 @@ if __name__ == "__main__":
     # d.add_item(image_file="static/cat.jpg", item_name="Pheephee", item_description="Pheephee does all the heavy lifting", person_id=4)
     d.load()
     d.show()
-    d.save()
+    # d.save()
     # Phydough - Fido
     # d.load()
     # # d.show()

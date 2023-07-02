@@ -1,4 +1,4 @@
-import pickle
+import json
 
 
 class Person:
@@ -11,6 +11,26 @@ class Person:
         print(f"Person with id {self.person_id} and name {self.person_name}")
         if self.person_image_file:
             print(f"  The image file for this person is {self.person_image_file}")
+
+    def as_json(self):
+        """
+        Return a dictionary representation of this object - so that we can save it as json
+        :return: a dictionary
+        """
+        return {
+            "person_id": self.person_id,
+            "person_name": self.person_name,
+            "person_image_file": self.person_image_file
+        }
+
+    def from_json(self, d):
+        """
+        Take in a dictionary, and convert it to a person object
+        :return: None
+        """
+        self.person_id = d["person_id"]
+        self.person_name = d["person_name"]
+        self.person_image_file = d["person_image_file"]
 
 
 class Item:
@@ -25,17 +45,43 @@ class Item:
         if self.image_file is not None:
             print(f"  {self.image_file}")
 
+    def as_json(self):
+        """
+        Return a dictionary representation of this object - so that we can save it as json
+        :return: a dictionary
+        """
+        return {
+            "item_name": self.item_name,
+            "item_description": self.item_description,
+            "person_id": self.person_id,
+            "image_file": self.image_file,
+        }
+
+    def from_json(self, d):
+        """
+        Take in a dictionary, and convert it to a person object
+        :return: None
+        """
+        self.item_name = d["item_name"]
+        self.item_description = d["item_description"]
+        self.person_id = d["person_id"]
+        self.image_file = d["image_file"]
+
 
 class Database:
-    def __init__(self, pickle_file):
+    def __init__(self, json_file):
         self.persons = []  # List of persons
         self.items = []  # List of items
-        self.pickle_file = pickle_file
+        self.json_file = json_file
 
     def save(self):
         try:
-            with open(self.pickle_file, "wb") as f:
-                pickle.dump(self, f, protocol=pickle.HIGHEST_PROTOCOL)
+            with open(self.json_file, "w") as f:
+                dictionary = {
+                    "items": [i.as_json() for i in self.items],
+                    "persons": [p.as_json() for p in self.persons]
+                }
+                json.dump(dictionary, f)
         except Exception as ex:
             print("Error during pickling object (Possibly unsupported):", ex)
 
@@ -70,13 +116,23 @@ class Database:
 
     def load(self):
         try:
-            with open(self.pickle_file, "rb") as f:
+            with open(self.json_file, "r") as f:
                 # create a new database from the loaded file
-                loaded_d = pickle.load(f)
+                dictionary = json.load(f)
 
-                # copy persons and items from the loaded database to ourself
-                self.persons = list(loaded_d.persons)
-                self.items = list(loaded_d.items)
+                self.persons = []
+                self.items = []
+
+                for person_object in dictionary["persons"]:
+                    new_person = Person()
+                    new_person.from_json(person_object)
+                    self.persons.append(new_person)
+
+                for item_object in dictionary["items"]:
+                    new_item = Item()
+                    new_item.from_json(item_object)
+                    self.items.append(new_item)
+
         except Exception as ex:
             print("Error during unpickling object (Possibly unsupported):", ex)
 
